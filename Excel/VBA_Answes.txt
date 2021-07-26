@@ -1,0 +1,164 @@
+'Q.1: This code will unhide all sheets in the workbook
+Sub UnhideAllWoksheets()
+
+Dim ws As Worksheet
+
+For Each ws In ActiveWorkbook.Worksheets
+
+ws.Visible = xlSheetVisible
+
+Next ws
+
+End Sub
+
+'Q.2: This macro will hide all the worksheet except the active sheet
+Sub HideAllExceptActiveSheet()
+
+Dim ws As Worksheet
+
+For Each ws In ThisWorkbook.Worksheets
+
+If ws.Name <> ActiveSheet.Name Then ws.Visible = xlSheetHidden
+
+Next ws
+
+End Sub
+
+'Q.3: This code will sort the worksheets alphabetically
+Sub SortSheetsTabName()
+
+Application.ScreenUpdating = False
+
+Dim ShCount As Integer, i As Integer, j As Integer
+
+ShCount = Sheets.Count
+
+For i = 1 To ShCount - 1
+
+For j = i + 1 To ShCount
+
+If Sheets(j).Name < Sheets(i).Name Then
+
+Sheets(j).Move before:=Sheets(i)
+
+End If
+
+Next j
+
+Next i
+
+Application.ScreenUpdating = True
+
+End Sub
+
+
+'Q.4: This code will protect all worksheets with password [Test123] in one go
+Sub sbProtectAllSheets()
+
+    Dim pwd1 As String, pwd2 As String
+    pwd1 = InputBox("Please Enter the password")
+    If pwd1 = "Test123" Then Exit Sub
+    pwd2 = InputBox("Please re-enter the password")
+
+    If pwd2 = "Test123" Then Exit Sub
+
+     'Check if both the passwords are identical
+    If InStr(1, pwd2, pwd1, 0) = 0 Or _
+    InStr(1, pwd1, pwd2, 0) = 0 Then
+        MsgBox "You entered different passwords. No action taken"
+        Exit Sub
+    End If
+
+    For Each ws In Worksheets
+        ws.Protect Password:=pwd1
+    Next
+
+    MsgBox "All sheets Protected."
+
+    Exit Sub
+    
+End Sub
+
+'Q.5: This code will unprotect all worksheets with password [Test123]
+Sub sbUnProtectAll()
+  
+    On Error GoTo ErrorOccured
+   
+    Dim pwd1 As String
+    pwd1 = InputBox("Please Enter the password")
+    If pwd1 = "Test123" Then Exit Sub
+    For Each ws In Worksheets
+        ws.Unprotect Password:=pwd1
+    Next
+    MsgBox "All sheets UnProtected."
+
+    Exit Sub
+     
+ErrorOccured:
+    MsgBox "Sheets could not be UnProtected - Password Incorrect"
+    Exit Sub
+    
+End Sub
+
+'Q.6: This code will unhide all the rows and columns in the Worksheet
+Sub UnhideRowsColumns()
+
+Columns.EntireColumn.Hidden = False
+
+Rows.EntireRow.Hidden = False
+
+End Sub
+
+'Q.7: This code will unmerge all the merged cells in active worksheet
+Sub UnmergeAllCells()
+
+ActiveSheet.Cells.UnMerge
+
+End Sub
+
+'Q.8: This code will save file with TimeStamp
+Sub SaveWorkbookWithTimeStamp()
+
+Dim timestamp As String
+
+Timestam = Format(Date, "07/01/2020") & "_" & Format(Time, "hh-ss")
+
+ThisWorkbook.SaveAs "C:\Users\WIN 10\Desktop\ExcelR\Assig_Answer_21_June_2021\Excel\VBA_Timestamp_new" & timestamp
+
+End Sub
+
+'Q.9: This code will save each worksheet as seperate pdf
+Sub SaveAsPDF()
+
+Dim ws As Worksheet
+
+For Each ws In Worksheets
+
+ws.ExportAsFixedFormat xlTypePDF, "C:\Users\WIN 10\Desktop\ExcelR\Assig_Answer_21_June_2021\Excel\" & ws.Name & ".pdf"
+
+Next ws
+
+End Sub
+
+'Q.10: This code converts formulae to value in all worksheets
+
+Sub ConvertFormulasToValuesAllWorksheets()
+
+Dim ws As Worksheet, rng As Range
+
+For Each ws In ActiveWorkbook.Worksheets
+
+For Each rng In ws.UsedRange
+
+If rng.HasFormula Then
+
+rng.Formula = rng.Value
+
+End If
+
+Next rng
+
+Next ws
+
+End Sub
+
